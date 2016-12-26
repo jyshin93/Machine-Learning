@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+
+\begin{document}
+\title{Machine Learning Homework \#2 - Analytical}
+\author{Jin Yong Shin}
+\maketitle
+\newpage
+%question 1
+\section{Overfitting}
+%part(a)
+\subsection{part(a)}
+The set $(\lambda_1, \gamma_1)$ and $(\lambda_2, \gamma_2)$ have same cross validation error. This means that their bias level are similar and project smoothly with good kernel value(Overfitting). The parameter that we have to consider will be $\gamma$ parameter which will change the smoothness of the kernel projection and will change the loss. If we reduce the $\gamma$, we can get different error value for the loss of the kernel function. In addition, the reason getting the same cross validation error may come from the partition of the data set. If they are using same partition of the data set and similar parameter values, they may have same error. However, if we change the partition of the cross validation data set, then we can have different error.
+%part(b)
+\subsection{part(b)}
+In primal form, we can solve for the vector $w$ which is the length of features, that is coming from variables. In here, we have $m$ parameters for primal form. Additionally, dual form has $n$ parameters to solve which we can solve for the vector $a$, denoted as length of examples. As problem has explained, when $m >> n$, it is better to use dual form because we are not free to choose a parameter for each feature. In a linear combination of inputs, we can only chose the parameters for $a$. Therefore, no matter how large our feature space projection, there are only $n$ many $a$s. Intuitively, by transforming from primal to dual form, we can introduce slack variables to find maximum margin in the features. Therefore, by finding maximum margin, we can avoid overfitting (Generalization works).
+
+\newpage
+%Question 2.
+\section{Hinge Loss}
+%part(a)
+\subsection{part(a)}
+$(i)$ Advantages: As the prediction gets close to the correct answer, the loss will be reduced more than linear hinge loss. For example, if the prediction a = $\frac{1}{2}$, then squared hinge loss will give loss of $\frac{1}{4}$ while regular hinge loss will give $\frac{1}{2}$. Therefore, squared hinge loss will get more correct loss as the predictions get close to correct answer.
+\newline
+$(ii)$ Disadvantages: This will penalize more if we predict wrong. This means that as it gets less correct, the outliers will get highly penalized compared to linear hinge loss.
+%part(b)
+\subsection{part(b)}
+$(i)$To prove the convexity, we need to prove that $H(\frac{a+b}{2}) \leqslant \frac{H(a)+H(b)}{2}$. for $a, b \leqslant 0$. Here we are using $H(a) = max(1 - a, 0)^2$. $H(\frac{a+b}{2}) = max(1 - \frac{a+b}{2}, 0)^2 = (\frac{2-a-b}{2})^2$. Now on the right hand side, $\frac{H(a)+H(b)}{2} = \frac{(1-a)^2+(1-b)^2}{2}$.  \newline$(\frac{2-a-b}{2})^2\leqslant \frac{(1-a)^2+(1-b)^2}{2}$.
+\newline $(ii)$ There is another simple way of proving convexity. Take first derivative of the hinge loss. \newline $H'(a) = 2(a-1)$ for $a \leqslant 1$ \newline $H'(a) = 0$ for $a \geqslant 1$ \newline Then if we take second derivative, $H''(a) = 2 > 0$. From the derivative and convexity rule, if second derivative is bigger than 0, there is at least one global minimum, which means $H(a)$ is convex function of a.
+%part(c)
+\subsection{part(c)}
+The new function $H'(a) = max(-a,0)^2$ has drawback in prediction and calculating correct loss. For example, at a = 0, standard squared loss function will give loss of 1 while new loss function will give 0. But a = 0 is not a correct prediction. Therefore, new loss function is not calculating loss correctly based on the prediction (poor performance).
+%part(d)
+\subsection{part(d)}
+The new hinge function $H'(a) = max(0.5 -a , 0)^2$ will shift the hinge function to the left from the original position when we use $H(a) = max(1-a, 0)^2$. This means that new hinge function will sit below original and give less loss value than the original loss function. This will change our objective function value. Assuming that we are keeping weight vector constant with the objective function, we need to increase $\lambda '$ from original $\lambda$ to get same weights from the objective function. We need to put more regularization to keep it under-fit. 
+\newpage
+%Question 3.
+\section{Kernel Trick}
+%part(a)
+\subsection{part(a)}
+With large d, the features in the set will vary less smoothly since it will cause lower kernel value (inner product of x features). By lowering the kernel, it will give SVM lower flexibility by restricting decision boundary. Low kernel will restrict decision boundary so that it will work just like linearly. (Less Sensitive) This means that it will have higher bias and lower variance. Therefore, it is less likely over-fitted.
+%part(b)
+\subsection{part(b)}
+With large $\sigma$, the features in the set will vary less smoothly. In kernel, estimating $\sigma$ is critical since the behavior of the kernel is distinguished by $\sigma$. Therefore, if we have overestimated $\sigma$, which means high value of it, we will restrict the flexibility of kernel and make it act like linear kernel (Decision boundary less sensitive). This means that it will have higher bias and lower variance. Therefore, it is less likely over-fitted.
+%part(c)
+\subsection{part(c)}
+Let $\phi^1$ and $\phi^2$ (not squared, just denoting 2)be the feature vectors associated with $K_1$ and $K_2$, where $\phi = [\phi_1^1\phi_2^1...,\phi_1^2\phi_2^2...]$ . In here we just need to show inner product of $\phi$ functions. Then $<\phi(x), \phi(x')> = \sum_{i=1}^{N} \phi_i(x)$ x $\phi_i(x') = \sum_{i=1}^{m} \phi_i^1(x)$ x $\phi_i^1(x') + \sum_{i=1}^{m} \phi_i^2(x)$ x $\phi_i^2(x')$. Then we will get $<\phi^1(x),\phi^1(x')> + <\phi^2(x),\phi^2(x')>$.This will equal to $K_1(x,x') + K_2(x,x') = K(x,x')$. Therefore, the proof is shown.
+\newpage
+%Question 4.
+\section{Predictions with Kernel}
+%part(a)
+\subsection{part(a)}
+Computational complexity of a linear SVM is depending on the number of the inputs. (Specifically input dimension). Linear model of the SVM will be stored and evaluated with the inner product of the example vectors and feature vectors. In here, we have $m$ and $n$ vectors respectively. Therefore, the computational complexity of a linear SVM is going to be $O(m*n)$. If every example contains at most $q$ nonzero features, then the worst case of inner product of feature vector and example vector will be $O(q*n)$. This will be accelerating the prediction if we know the index set of the vector where it has 0 vector. Then we can make sparse vector to use quicker computation.
+\subsection{part(b)}
+Dual kernel SVM computational complexity is proportional to support vector. As we have calculated in part(a), the linear SVM has $O(mn)$ computational complexity because it is depending on inner product of feature and example vectors. Therefore, computational complexity of dual kernel SVM will b $O(s*m*n)$ since it has $s$ support vectors. Also same as the previous problem, we can make sparse vector of the feature vector since it has some zero vectors. Therefore, the computation complexity will be reduced to $O(s*q*n)$.
+\newpage
+%Question 5.
+\section{Dual Perceptron} 
+\subsection{part(a)}
+If we are training on a perceptron classifier and the stream of the data is not-linearly separable, then we can use kernel SVM to raise the dimension to separate the data stream. We usually raise the data stream into the dimension of data stream + 1 to separate. However, as the problem has mentioned, the data stream is infinite and we cannot raise to infinite + 1 dimension. Therefore, there is no bounded number in prediction error.
+\subsection{part(b)}
+Yes, they are learning same prediction function. Primal perceptron and dual perceptron both are using support vector to construct hyperplane for classification model. Primal and dual formulations are complimentary even though their way of learning is different. Therefore, learning prediction function will give same prediction function for the other. Primal function minimized objective function and use vector to minimize the function while dual formation will maximize objective function with dual variables. By meaning of linear programming, maximizing is another way of minimizing. Therefore, they will learn same prediction function. 
+\subsection{part(c)}
+Computational complexity associated with dual perceptron is $O(Td)$ where $T$ is the size of the training set and $d$ is the size of the parameter vector. Then if we raise $T$ to infinite, then the computational complexity will be $O(Td) = \infty$, which we won't be able to compute the dual perceptron and the program will run forever. However, primal computational complexity does not depend on examples. Since primal perceptron complexity depends on features, we can raise $T$ to $\infty$. Primal form would not have computational issue with large $T$
+\newpage
+%Question 6.
+\section{Robust SVM}
+One of the drawbacks from SVM is that the classifier is very sensitive to the outlier so that the loss function tend to penalize a lot for examples that are not consistent. Therefore, the support vector has too many in numbers to mess up the projection. The classifier by using original hinge loss function can create poor classification performance. Rather than penalizing outlier, we can put restriction to bound the loss function and reduce noise value. If we add restriction on the maximum loss function (the threshold amount), we can reduce the problem of penalizing outliers and prevent poor prediction. The new function will be: $$H'(a) = max(0, 1 - a) - max(0 , r - a)$$ for $r \leqslant 0$. For this case, we can choose our threshold $r$ and we can prevent outlier being penalized. This function will be robust to outliers. The function will look like below if we pick $r = -5$. However, this robust hinge loss also have some drawbacks. First is that some estimable examples (not outlier) will be overlapped with other examples in loss wise. Even though margins are different, they will have same loss which can create poor prediction as well. Another drawback is that they are containing convex function. 
+\includegraphics[width=1\textwidth]{truncated}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
